@@ -21,3 +21,4 @@ function getTotal(number1: number, number2: any) {
 }
 
 const result = getTotal(3, 4)     // 函数也是一个样
+
