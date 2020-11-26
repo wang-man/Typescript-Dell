@@ -18,11 +18,15 @@ interface CourseJson {
 
 class Crawler {
   private url = 'http://www.dell-lee.com/typescript/demo.html'
-  constructor() {
+  // private a: string
+  constructor(private a: string) {
+    // this.a = a
+    console.log(this.a)
     this.getRawHtml()
   }
 
   async getRawHtml() {
+    // console.log(this.a)
     const html = await superagent.get(this.url)
     this.getCourseInfo(html.text)
   }
@@ -43,33 +47,33 @@ class Crawler {
     const time = (new Date()).getTime().toString()
 
     // 每次爬取结果，以时间戳作为键来存储
-    const courseInfo: CourseObj = {
+    const courseInfo = {
       time,
       data: courseList
     }
 
-    this.getCourseJson(courseInfo)
+    this.generateCourseJson(courseInfo)
   }
 
   // 写入到文件中
-  getCourseJson(newCourseInfo: CourseObj) {
+  generateCourseJson(newCourseInfo: CourseObj) {
     // 创建文件路径
     const filePath = path.resolve(__dirname, './course.json')
+
     let fileContent: CourseJson = {}
-    // 判断是否有该文件
+    // 1.判断是否有该文件，有则放入一个对象
     if (fs.existsSync(filePath)) {
       // 读取文件
       const fileString = fs.readFileSync(filePath, 'utf-8')
       console.log(fileString)
       fileContent = JSON.parse(fileString)
     }
-    // 增量式填充到对象中
+    // 2.每次执行此类就爬取结果(增量式)填充到对象中，然后写入文件
     fileContent[newCourseInfo['time']] = newCourseInfo['data']
 
-    // 写入文件
     fs.writeFileSync(filePath, JSON.stringify(fileContent))
   }
 
 }
 
-const crawler = new Crawler()
+const crawler = new Crawler('1')
