@@ -1,66 +1,24 @@
 import fs from 'fs'
 import path from 'path'
 import superagent from 'superagent'
-import cheerio from 'cheerio'
 
-interface Course {
-  src: string;
-  desc: string;
-}
-
-interface CourseObj {
-  time: string
-  data: Course[]      // 属性名为时间戳，所以是不确定的，因此可以用可变键来表示
-}
-interface CourseJson {
-  [propName: string]: Course[]  // 属性名为时间戳，所以是不确定的，因此可以用可变键来表示
-}
-
-class Crawler {
-  private url = 'http://www.dell-lee.com/typescript/demo.html'
-  // private a: string
-  constructor(private a: string) {
-    // this.a = a
-    console.log(this.a)
-    this.getRawHtml()
+export default class Crawler {
+  constructor(private url: string, private filePath: string) {
   }
 
+  // 1. 爬取原始html
   async getRawHtml() {
-    // console.log(this.a)
     const html = await superagent.get(this.url)
-    this.getCourseInfo(html.text)
+    return html.text
   }
 
-  getCourseInfo(html: string) {
-    const $ = cheerio.load(html)
-    const courseDomList = $('.course-item')
 
-    const courseList: Course[] = []
-    courseDomList.each((index, item) => {
-      const src = $(item).find('.course-img').attr('src') || ''
-      const desc = $(item).find('.course-desc').text()
-      courseList.push({
-        src,
-        desc
-      })
-    })
-    const time = (new Date()).getTime().toString()
-
-    // 每次爬取结果，以时间戳作为键来存储
-    const courseInfo = {
-      time,
-      data: courseList
-    }
-
-    this.generateCourseJson(courseInfo)
-  }
-
-  // 写入到文件中
-  generateCourseJson(newCourseInfo: CourseObj) {
+  // 2.读取可能已存文件内容
+  readFileJson() {
     // 创建文件路径
-    const filePath = path.resolve(__dirname, './course.json')
+    const filePath = path.resolve(__dirname, this.filePath)
 
-    let fileContent: CourseJson = {}
+    let fileContent = {}
     // 1.判断是否有该文件，有则放入一个对象
     if (fs.existsSync(filePath)) {
       // 读取文件
@@ -68,12 +26,14 @@ class Crawler {
       console.log(fileString)
       fileContent = JSON.parse(fileString)
     }
-    // 2.每次执行此类就爬取结果(增量式)填充到对象中，然后写入文件
-    fileContent[newCourseInfo['time']] = newCourseInfo['data']
+    return fileContent
+  }
 
-    fs.writeFileSync(filePath, JSON.stringify(fileContent))
+  // 3.将业务对象解析后的结果写入到文件中
+  generateJson(crawlerData: string) {
+    const filePath = path.resolve(__dirname, this.filePath)
+
+    fs.writeFileSync(filePath, crawlerData)
   }
 
 }
-
-const crawler = new Crawler('1')
