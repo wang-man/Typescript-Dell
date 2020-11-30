@@ -23,7 +23,6 @@ export default class Crawler {
     if (fs.existsSync(filePath)) {
       // 读取文件
       const fileString = fs.readFileSync(filePath, 'utf-8')
-      console.log(fileString)
       fileContent = JSON.parse(fileString)
     }
     return fileContent

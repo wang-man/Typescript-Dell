@@ -1,3 +1,5 @@
+// 爬取慕课网
+
 import cheerio from 'cheerio'
 import Crawler from './crawler'
 
@@ -24,8 +26,6 @@ class Imooc {
   // 1.拿到爬虫得到的原始html
   async getImoocHtml(crawler: Crawler) {
     const html = await crawler.getRawHtml()
-    // console.log(html)
-    // return;
     this.parseHtml(html)
   }
 
@@ -59,8 +59,6 @@ class Imooc {
       })
     })
 
-    console.log('curseData', curseData)
-    // return
     this.generateContent(curseData)
   }
 
@@ -81,8 +79,9 @@ class Imooc {
 }
 
 
+// 慕课网数据爬取...
 const url = 'https://www.imooc.com/new/'
-const filePath = './data/imooc.json'
+const filePath = '../data/imooc.json'
 
 const crawler = new Crawler(url, filePath)
 

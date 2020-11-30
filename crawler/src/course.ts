@@ -23,7 +23,6 @@ class Course {
   // 1.拿到爬虫得到的原始html
   async getCourseHtml(crawler: Crawler) {
     const html = await crawler.getRawHtml()
-    console.log(html)
 
     this.parseHtml(html)
   }
@@ -66,9 +65,10 @@ class Course {
 
 }
 
+// Dell-Lee课程数据爬取/////
 
 const url = 'http://www.dell-lee.com/typescript/demo.html'
-const filePath = './data/course.json'
+const filePath = '../data/course.json'
 
 const crawler = new Crawler(url, filePath)
 
