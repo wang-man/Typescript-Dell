@@ -37,20 +37,25 @@ class Imooc {
     const curseData: ImoocObj[] = []
     courseDomList.each((index, item) => {
       const type = $(item).attr('data-group') || ''
-      const lessonItem = $(item).find('a.item')
+      const lessonItem = $(item).find('.list')
 
 
       const courseList: ImoocData[] = []
       lessonItem.each((index, item) => {
-        const title = $(item).find('p.title').text() || ''
-        const price = $(item).find('.price').text() || ''
-        const originPrice = $(item).find('.origin-price').text() || ''
+        const lessonList = $(item).find('a.item');
 
-        courseList.push({
-          title,
-          price,
-          originPrice,
+        lessonList.each((index, item) => {
+          const title = $(item).find('p.title').text() || ''
+          const price = $(item).find('.price').text() || ''
+          const originPrice = $(item).find('.origin-price').text() || ''
+
+          courseList.push({
+            title,
+            price,
+            originPrice,
+          })
         })
+
       })
 
       curseData.push({
@@ -78,11 +83,12 @@ class Imooc {
 
 }
 
+export default Imooc;
 
 // 慕课网数据爬取...
-const url = 'https://www.imooc.com/new/'
-const filePath = '../data/imooc.json'
+// const url = 'https://www.imooc.com/new/'
+// const filePath = '../data/imooc.json'
 
-const crawler = new Crawler(url, filePath)
+// const crawler = new Crawler(url, filePath)
 
-new Imooc(crawler)
+// new Imooc(crawler)

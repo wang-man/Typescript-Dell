@@ -41,7 +41,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var cheerio_1 = __importDefault(require("cheerio"));
-var crawler_1 = __importDefault(require("./crawler"));
 var Imooc = /** @class */ (function () {
     function Imooc(crawler) {
         this.crawler = crawler;
@@ -69,16 +68,19 @@ var Imooc = /** @class */ (function () {
         var curseData = [];
         courseDomList.each(function (index, item) {
             var type = $(item).attr('data-group') || '';
-            var lessonItem = $(item).find('a.item');
+            var lessonItem = $(item).find('.list');
             var courseList = [];
             lessonItem.each(function (index, item) {
-                var title = $(item).find('p.title').text() || '';
-                var price = $(item).find('.price').text() || '';
-                var originPrice = $(item).find('.origin-price').text() || '';
-                courseList.push({
-                    title: title,
-                    price: price,
-                    originPrice: originPrice,
+                var lessonList = $(item).find('a.item');
+                lessonList.each(function (index, item) {
+                    var title = $(item).find('p.title').text() || '';
+                    var price = $(item).find('.price').text() || '';
+                    var originPrice = $(item).find('.origin-price').text() || '';
+                    courseList.push({
+                        title: title,
+                        price: price,
+                        originPrice: originPrice,
+                    });
                 });
             });
             curseData.push({
@@ -101,8 +103,9 @@ var Imooc = /** @class */ (function () {
     };
     return Imooc;
 }());
+exports.default = Imooc;
 // 慕课网数据爬取...
-var url = 'https://www.imooc.com/new/';
-var filePath = '../data/imooc.json';
-var crawler = new crawler_1.default(url, filePath);
-new Imooc(crawler);
+// const url = 'https://www.imooc.com/new/'
+// const filePath = '../data/imooc.json'
+// const crawler = new Crawler(url, filePath)
+// new Imooc(crawler)
