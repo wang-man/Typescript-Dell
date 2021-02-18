@@ -1,0 +1,17 @@
+{
+  "name": "decrator",
+  "version": "1.0.0",
+  "description": "类的装饰器",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node ./src/装饰器实用小栗子.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^9.1.1"
+  },
+  "dependencies": {
+    "typescript": "^4.1.3"
+  }
+}
