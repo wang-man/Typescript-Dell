@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Switch, Route, BrowserRouter, Redirect, } from 'react-router-dom';
+import Login from './pages/login';
+import Chart from './pages/chart';
 import './App.css';
+import 'antd/dist/antd.css';
+class App extends React.Component {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+  render() {
+    return (
+      <div className="app">
+        <BrowserRouter>
+          <Switch>
+            <Redirect path='/' exact to='/login'></Redirect>
+            <Route path='/login' exact component={Login}></Route>
+            <Route path='/chart' exact component={Chart}></Route>
+          </Switch>
+        </BrowserRouter>
+      </div>
+
+    );
+  }
+
 }
 
 export default App;
