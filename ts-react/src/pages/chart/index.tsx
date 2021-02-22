@@ -6,6 +6,7 @@ import './style.css';
 class Chart extends React.Component {
 
   getOption: () => echarts.EChartsOption = () => {
+    const labelone: chartLable.isLogin = false;
     return {
       title: {
         text: '折线图堆叠'
